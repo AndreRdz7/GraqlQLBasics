@@ -32,11 +32,27 @@ const posts = [
   }
 ];
 
+const comments = [
+  {
+    id: "102",
+    text: "This is a comment",
+    author: "2",
+    post: "1"
+  },
+  {
+    id: "103",
+    text: "This is a comment too",
+    author: "1",
+    post: "2"
+  }
+];
+
 // Type definitions
 const typeDefs = `
     type Query {
       users(query: String): [User!]!
       posts(query: String): [Post!]!
+      comments: [Comment!]!
       me: User!
       post: Post!
     }
@@ -56,6 +72,13 @@ const typeDefs = `
       published: Boolean!
       author: User!
     }
+
+    type Comment {
+      id: ID!
+      text: String!
+      author: User!
+      post: Post!
+  }
 `;
 // Resolvers
 const resolvers = {
@@ -73,8 +96,17 @@ const resolvers = {
         return posts;
       }
       return posts.filter(post => {
-        return post.title.toLowerCase().includes(args.query.toLowerCase());
+        const isTitleMatch = post.title
+          .toLowerCase()
+          .includes(args.query.toLowerCase());
+        const isBodyMatch = post.body
+          .toLowerCase()
+          .includes(args.query.toLowerCase());
+        return isTitleMatch || isBodyMatch;
       });
+    },
+    comments(parent, args, ctx, info) {
+      return comments;
     },
     me() {
       return {
@@ -97,6 +129,18 @@ const resolvers = {
     author(parent, args, ctx, info) {
       return users.find(user => {
         return user.id === parent.author;
+      });
+    }
+  },
+  Comment: {
+    author(parent, args, ctx, info) {
+      return users.find(user => {
+        return user.id === parent.author;
+      });
+    },
+    post(parent, args, ctx, info) {
+      return posts.find(post => {
+        return post.id === parent.post;
       });
     }
   },
