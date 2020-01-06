@@ -10,10 +10,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "braces": ">=2.3.1",
     "babel-cli": "^6.26.0",
     "babel-preset-env": "^1.7.0",
-    "graphql-yoga": "^1.16.7"
+    "braces": ">=2.3.1",
+    "graphql-yoga": "^1.16.7",
+    "uuid": "^3.3.3"
   },
   "devDependencies": {
     "nodemon": "^2.0.2"
